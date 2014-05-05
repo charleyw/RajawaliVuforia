@@ -1,12 +1,14 @@
 package com.example.rajawalivuforiaexample;
 
-import rajawali.util.RajLog;
-import rajawali.vuforia.RajawaliVuforiaActivity;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.SeekBar;
+
+import rajawali.util.RajLog;
+import rajawali.vuforia.RajawaliVuforiaActivity;
 
 public class RajawaliVuforiaExampleActivity extends RajawaliVuforiaActivity {
 	private RajawaliVuforiaExampleRenderer mRenderer;
@@ -45,8 +47,9 @@ public class RajawaliVuforiaExampleActivity extends RajawaliVuforiaActivity {
 		createFrameMarker(1, "Marker1", 50, 50);
 		createFrameMarker(2, "Marker2", 50, 50);
 		
+		createImageMarker("firsttest.xml");
 		createImageMarker("StonesAndChips.xml");
-		
+
 		// -- this is how you add a cylinder target:
 		//    https://developer.vuforia.com/resources/dev-guide/cylinder-targets
 		// createImageMarker("MyCylinderTarget.xml");
@@ -83,9 +86,31 @@ public class RajawaliVuforiaExampleActivity extends RajawaliVuforiaActivity {
                      mStartScanButton.setVisibility(View.GONE);
                  }
         });
-        
+
+        SeekBar seekBar = new SeekBar(this);
+
+        seekBar.setMax(10);
+        seekBar.setProgress(1);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                mRenderer.changeScale(i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         mUILayout = this;
-        mUILayout.addContentView(mStartScanButton, 
-            new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));		
+        mUILayout.addContentView(seekBar,
+            new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 	}    
 }

@@ -1,3 +1,6 @@
+.idea
+*.iml
+out
 RajawaliVuforia/bin/
 RajawaliVuforia/gen/rajawali/vuforia/BuildConfig.java
 RajawaliVuforia/obj/local/armeabi-v7a/libFrameMarkers.so

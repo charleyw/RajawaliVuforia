@@ -1,35 +1,24 @@
 package com.example.rajawalivuforiaexample;
 
-import java.io.ObjectInputStream;
-import java.util.zip.GZIPInputStream;
+import android.content.Context;
 
 import javax.microedition.khronos.opengles.GL10;
 
 import rajawali.Object3D;
-import rajawali.SerializedObject3D;
-import rajawali.animation.mesh.SkeletalAnimationObject3D;
-import rajawali.animation.mesh.SkeletalAnimationSequence;
 import rajawali.lights.DirectionalLight;
-import rajawali.materials.Material;
-import rajawali.materials.methods.DiffuseMethod;
-import rajawali.materials.methods.SpecularMethod;
 import rajawali.materials.textures.Texture;
 import rajawali.math.Quaternion;
 import rajawali.math.vector.Vector3;
-import rajawali.parser.md5.LoaderMD5Anim;
-import rajawali.parser.md5.LoaderMD5Mesh;
-import rajawali.util.RajLog;
+import rajawali.parser.LoaderOBJ;
+import rajawali.parser.ParsingException;
 import rajawali.vuforia.RajawaliVuforiaRenderer;
-import android.content.Context;
 
 public class RajawaliVuforiaExampleRenderer extends RajawaliVuforiaRenderer {
 	private DirectionalLight mLight;
-	private SkeletalAnimationObject3D mBob;
-	private Object3D mF22;
-	private Object3D mAndroid;
 	private RajawaliVuforiaExampleActivity activity;
+    private Object3D sofa;
 
-	public RajawaliVuforiaExampleRenderer(Context context) {
+    public RajawaliVuforiaExampleRenderer(Context context) {
 		super(context);
 		activity = (RajawaliVuforiaExampleActivity)context;
 	}
@@ -42,128 +31,62 @@ public class RajawaliVuforiaExampleRenderer extends RajawaliVuforiaRenderer {
 		getCurrentScene().addLight(mLight);
 		
 		try {
-			//
-			// -- Load Bob (model by Katsbits
-			// http://www.katsbits.com/download/models/)
-			//
+            mTextureManager.addTexture(new Texture("wool256.jpg", R.drawable.wool256));
+            LoaderOBJ loaderOBJ = new LoaderOBJ(mContext.getResources(), mTextureManager, R.raw.sofa1_obj);
 
-			LoaderMD5Mesh meshParser = new LoaderMD5Mesh(this,
-					R.raw.boblampclean_mesh);
-			meshParser.parse();
-			mBob = (SkeletalAnimationObject3D) meshParser
-					.getParsedAnimationObject();
-			mBob.setScale(2);
+            try {
+                sofa = loaderOBJ.parse().getParsedObject();
+                sofa.setScale(50f);
+                sofa.setRotY(90);
+                sofa.setY(-1);
 
-			LoaderMD5Anim animParser = new LoaderMD5Anim("dance", this,
-					R.raw.boblampclean_anim);
-			animParser.parse();
-			mBob.setAnimationSequence((SkeletalAnimationSequence) animParser
-					.getParsedAnimationSequence());
+                addChild(sofa);
+            } catch (ParsingException e) {
+                e.printStackTrace();
+            }
 
-			getCurrentScene().addChild(mBob);
 
-			mBob.play();
-			mBob.setVisible(false);
-
-			//
-			// -- Load F22 (model by KuhnIndustries
-			// http://www.blendswap.com/blends/view/67634)
-			//
-
-			GZIPInputStream gzi = new GZIPInputStream(mContext.getResources()
-					.openRawResource(R.raw.f22));
-			ObjectInputStream fis = new ObjectInputStream(gzi);
-			SerializedObject3D serializedObj = (SerializedObject3D) fis
-					.readObject();
-			fis.close();
-
-			mF22 = new Object3D(serializedObj);
-			mF22.setScale(30);
-			addChild(mF22);
-			
-			Material f22Material = new Material();
-			f22Material.enableLighting(true);
-			f22Material.setDiffuseMethod(new DiffuseMethod.Lambert());
-			f22Material.addTexture(new Texture("f22Texture", R.drawable.f22));
-			f22Material.setColorInfluence(0);
-			
-			mF22.setMaterial(f22Material);
-			
-			//
-			// -- Load Android
-			//
-			
-			gzi = new GZIPInputStream(mContext.getResources()
-					.openRawResource(R.raw.android));
-			fis = new ObjectInputStream(gzi);
-			serializedObj = (SerializedObject3D) fis
-					.readObject();
-			fis.close();
-			
-			mAndroid = new Object3D(serializedObj);
-			mAndroid.setScale(14);
-			addChild(mAndroid);
-			
-			Material androidMaterial = new Material();
-			androidMaterial.enableLighting(true);
-			androidMaterial.setDiffuseMethod(new DiffuseMethod.Lambert());
-			androidMaterial.setSpecularMethod(new SpecularMethod.Phong());
-			mAndroid.setColor(0x00dd00);
-			mAndroid.setMaterial(androidMaterial);
-		} catch (Exception e) {
+        } catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+    public void changeScale(int scale){
+        sofa.setScale(scale);
+    }
 
 	@Override
 	protected void foundFrameMarker(int markerId, Vector3 position,
 			Quaternion orientation) {
 		
 		if (markerId == 0) {
-			mBob.setVisible(true);
-			mBob.setPosition(position);
-			mBob.setOrientation(orientation);
-		} else if (markerId == 1) {
-			mAndroid.setVisible(true);
-			mAndroid.setPosition(position);
-			mAndroid.setOrientation(orientation);
+			sofa.setVisible(true);
+            position.add(116.768383932224,-36.1243398942542,0);
+            sofa.setPosition(position);
+            sofa.setOrientation(orientation);
 		}
 	}
 
 	@Override
 	protected void foundImageMarker(String trackableName, Vector3 position,
 			Quaternion orientation) {
-		if(trackableName.equals("SamsungGalaxyS4"))
-		{
-			mBob.setVisible(true);
-			mBob.setPosition(position);
-			mBob.setOrientation(orientation);
-			RajLog.d(activity.getMetadataNative());
-		}
-		if(trackableName.equals("stones"))
-		{
-			mF22.setVisible(true);
-			mF22.setPosition(position);
-			mF22.setOrientation(orientation);
-		}
-		// -- also handle cylinder targets here
-		// -- also handle multi-targets here
-	}
+        sofa.setVisible(true);
+        position.add(116.768383932224,-36.1243398942542,0);
+        sofa.setPosition(position);
+        sofa.setOrientation(orientation);
+    }
 
 	@Override
 	public void noFrameMarkersFound() {
 	}
 
 	public void onDrawFrame(GL10 glUnused) {
-		mBob.setVisible(false);
-		mF22.setVisible(false);
-		mAndroid.setVisible(false);
+		sofa.setVisible(false);
+        super.onDrawFrame(glUnused);
 		
-		super.onDrawFrame(glUnused);
-		
-		if (!activity.getScanningModeNative())
-		{
-			activity.showStartScanButton();
-		}
+//		if (!activity.getScanningModeNative())
+//		{
+//			activity.showStartScanButton();
+//		}
 	}
 }
