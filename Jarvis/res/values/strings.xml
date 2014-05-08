@@ -4,6 +4,6 @@
     <string name="app_name">Jarvis</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="glass_start_command">play a game</string>
+    <string name="glass_start_command">PLAY_A_GAME</string>
 
 </resources>

@@ -20,19 +20,14 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
-import com.google.android.glass.timeline.TimelineManager;
-
 /**
  * Service owning the LiveCard living in the timeline.
  */
 public class StartJarvisService extends Service {
 
-    private TimelineManager mTimelineManager;
-
     @Override
     public void onCreate() {
         super.onCreate();
-        mTimelineManager = TimelineManager.from(this);
     }
 
     @Override
