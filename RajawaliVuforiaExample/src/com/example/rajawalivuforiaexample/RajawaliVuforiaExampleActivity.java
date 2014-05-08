@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
-import android.widget.SeekBar;
 
 import rajawali.util.RajLog;
 import rajawali.vuforia.RajawaliVuforiaActivity;
@@ -44,8 +43,8 @@ public class RajawaliVuforiaExampleActivity extends RajawaliVuforiaActivity {
 	{
 		super.initApplicationAR();
 		
-		createFrameMarker(1, "Marker1", 50, 50);
-		createFrameMarker(2, "Marker2", 50, 50);
+		createFrameMarker(0, "Marker1", 50, 50);
+		createFrameMarker(1, "Marker2", 50, 50);
 		
 		createImageMarker("firsttest.xml");
 		createImageMarker("StonesAndChips.xml");
@@ -58,18 +57,8 @@ public class RajawaliVuforiaExampleActivity extends RajawaliVuforiaActivity {
 		//    https://developer.vuforia.com/resources/dev-guide/multi-targets
 		// createImageMarker("MyMultiTarget.xml");
 	}
-	
-    public void showStartScanButton()
-    {
-        this.runOnUiThread(new Runnable() {
-                public void run() {
-                    if  (mStartScanButton != null)
-                        mStartScanButton.setVisibility(View.VISIBLE);
-                 }
-         });
-    }
 
-	@Override
+    @Override
 	protected void initRajawali() {
 		super.initRajawali();
 		mRenderer = new RajawaliVuforiaExampleRenderer(this);
@@ -87,30 +76,8 @@ public class RajawaliVuforiaExampleActivity extends RajawaliVuforiaActivity {
                  }
         });
 
-        SeekBar seekBar = new SeekBar(this);
-
-        seekBar.setMax(10);
-        seekBar.setProgress(1);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                mRenderer.changeScale(i);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
         mUILayout = this;
-        mUILayout.addContentView(seekBar,
-            new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        mUILayout.addContentView(mStartScanButton,
+            new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 	}    
 }

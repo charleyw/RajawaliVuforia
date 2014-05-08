@@ -2,6 +2,9 @@ package com.example.rajawalivuforiaexample;
 
 import android.content.Context;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.microedition.khronos.opengles.GL10;
 
 import rajawali.Object3D;
@@ -16,6 +19,7 @@ import rajawali.vuforia.RajawaliVuforiaRenderer;
 public class RajawaliVuforiaExampleRenderer extends RajawaliVuforiaRenderer {
 	private DirectionalLight mLight;
 	private RajawaliVuforiaExampleActivity activity;
+    private Map<Integer, Object3D> object3DMap= new HashMap<Integer, Object3D>();
     private Object3D sofa;
 
     public RajawaliVuforiaExampleRenderer(Context context) {
@@ -30,50 +34,39 @@ public class RajawaliVuforiaExampleRenderer extends RajawaliVuforiaRenderer {
 		
 		getCurrentScene().addLight(mLight);
 		
-		try {
-            mTextureManager.addTexture(new Texture("wool256.jpg", R.drawable.wool256));
-            LoaderOBJ loaderOBJ = new LoaderOBJ(mContext.getResources(), mTextureManager, R.raw.sofa1_obj);
+        mTextureManager.addTexture(new Texture("wool256.jpg", R.drawable.wool256));
 
-            try {
-                sofa = loaderOBJ.parse().getParsedObject();
-                sofa.setScale(50f);
-                sofa.setRotY(90);
-                sofa.setY(-1);
-
-                addChild(sofa);
-            } catch (ParsingException e) {
-                e.printStackTrace();
-            }
-
-
-        } catch (Exception e) {
-			e.printStackTrace();
-		}
+        loadModel(R.raw.sofa1_obj, 1f, 0);
+        loadModel(R.raw.smallerrailing_obj, 10f, 1);
 	}
 
-    public void changeScale(int scale){
-        sofa.setScale(scale);
+    private void loadModel(int resourceId, float scale, int markerId) {
+        LoaderOBJ loaderOBJ = new LoaderOBJ(mContext.getResources(), mTextureManager, resourceId);
+        try {
+            sofa = loaderOBJ.parse().getParsedObject();
+            Object3D object3D = sofa;
+            object3D.setScale(scale);
+            object3DMap.put(markerId, object3D);
+            addChild(object3D);
+        } catch (ParsingException e) {
+            e.printStackTrace();
+        }
     }
 
 	@Override
 	protected void foundFrameMarker(int markerId, Vector3 position,
 			Quaternion orientation) {
-		
-		if (markerId == 0) {
-			sofa.setVisible(true);
-            position.add(116.768383932224,-36.1243398942542,0);
-            sofa.setPosition(position);
-            sofa.setOrientation(orientation);
-		}
+        Object3D object3D = object3DMap.get(markerId);
+        if(object3D != null){
+            object3D.setVisible(true);
+            object3D.setPosition(position);
+            object3D.setOrientation(orientation);
+        }
 	}
 
 	@Override
 	protected void foundImageMarker(String trackableName, Vector3 position,
 			Quaternion orientation) {
-        sofa.setVisible(true);
-        position.add(116.768383932224,-36.1243398942542,0);
-        sofa.setPosition(position);
-        sofa.setOrientation(orientation);
     }
 
 	@Override
@@ -81,12 +74,14 @@ public class RajawaliVuforiaExampleRenderer extends RajawaliVuforiaRenderer {
 	}
 
 	public void onDrawFrame(GL10 glUnused) {
-		sofa.setVisible(false);
+        hideAllObject3Ds();
+
         super.onDrawFrame(glUnused);
-		
-//		if (!activity.getScanningModeNative())
-//		{
-//			activity.showStartScanButton();
-//		}
 	}
+
+    private void hideAllObject3Ds() {
+        for(Object3D object3D : object3DMap.values()){
+            object3D.setVisible(false);
+        }
+    }
 }
