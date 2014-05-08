@@ -1,4 +1,4 @@
-package com.example.rajawalivuforiaexample;
+package hackday.jarvis;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -9,8 +9,8 @@ import android.widget.Button;
 import rajawali.util.RajLog;
 import rajawali.vuforia.RajawaliVuforiaActivity;
 
-public class RajawaliVuforiaExampleActivity extends RajawaliVuforiaActivity {
-	private RajawaliVuforiaExampleRenderer mRenderer;
+public class Jarvis extends RajawaliVuforiaActivity {
+	private JarvisRenderer mRenderer;
 	private RajawaliVuforiaActivity mUILayout;
     private Button mStartScanButton;
 
@@ -61,7 +61,7 @@ public class RajawaliVuforiaExampleActivity extends RajawaliVuforiaActivity {
     @Override
 	protected void initRajawali() {
 		super.initRajawali();
-		mRenderer = new RajawaliVuforiaExampleRenderer(this);
+		mRenderer = new JarvisRenderer(this);
 		mRenderer.setSurfaceView(mSurfaceView);
 		super.setRenderer(mRenderer);
 		

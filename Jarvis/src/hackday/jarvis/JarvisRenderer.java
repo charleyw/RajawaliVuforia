@@ -1,4 +1,4 @@
-package com.example.rajawalivuforiaexample;
+package hackday.jarvis;
 
 import android.content.Context;
 
@@ -16,15 +16,14 @@ import rajawali.parser.LoaderOBJ;
 import rajawali.parser.ParsingException;
 import rajawali.vuforia.RajawaliVuforiaRenderer;
 
-public class RajawaliVuforiaExampleRenderer extends RajawaliVuforiaRenderer {
+public class JarvisRenderer extends RajawaliVuforiaRenderer {
 	private DirectionalLight mLight;
-	private RajawaliVuforiaExampleActivity activity;
+	private Jarvis activity;
     private Map<Integer, Object3D> object3DMap= new HashMap<Integer, Object3D>();
-    private Object3D sofa;
 
-    public RajawaliVuforiaExampleRenderer(Context context) {
+    public JarvisRenderer(Context context) {
 		super(context);
-		activity = (RajawaliVuforiaExampleActivity)context;
+		activity = (Jarvis)context;
 	}
 
 	protected void initScene() {
@@ -43,8 +42,7 @@ public class RajawaliVuforiaExampleRenderer extends RajawaliVuforiaRenderer {
     private void loadModel(int resourceId, float scale, int markerId) {
         LoaderOBJ loaderOBJ = new LoaderOBJ(mContext.getResources(), mTextureManager, resourceId);
         try {
-            sofa = loaderOBJ.parse().getParsedObject();
-            Object3D object3D = sofa;
+            Object3D object3D = loaderOBJ.parse().getParsedObject();
             object3D.setScale(scale);
             object3DMap.put(markerId, object3D);
             addChild(object3D);
