@@ -49,7 +49,7 @@ public class Jarvis extends RajawaliVuforiaActivity {
 
 		// -- this is how you add a cylinder target:
 		//    https://developer.vuforia.com/resources/dev-guide/cylinder-targets
-		// createImageMarker("MyCylinderTarget.xml");
+		createImageMarker("hackday.xml");
 		
 		// -- this is how you add a multi-target:
 		//    https://developer.vuforia.com/resources/dev-guide/multi-targets

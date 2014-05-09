@@ -1,5 +1,10 @@
 package rajawali.vuforia;
 
+import android.content.Context;
+import android.content.pm.ActivityInfo;
+
+import com.qualcomm.QCAR.QCAR;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -10,11 +15,6 @@ import rajawali.math.vector.Vector3;
 import rajawali.primitives.ScreenQuad;
 import rajawali.renderer.RajawaliRenderer;
 import rajawali.renderer.RenderTarget;
-import rajawali.util.RajLog;
-import android.content.Context;
-import android.content.pm.ActivityInfo;
-
-import com.qualcomm.QCAR.QCAR;
 
 public abstract class RajawaliVuforiaRenderer extends RajawaliRenderer {
 	private Vector3 mPosition;
@@ -39,7 +39,7 @@ public abstract class RajawaliVuforiaRenderer extends RajawaliRenderer {
 		mPosition = new Vector3();
 		mOrientation = new Quaternion();
 		getCurrentCamera().setNearPlane(10);
-		getCurrentCamera().setFarPlane(2500);
+		getCurrentCamera().setFarPlane(4000);
 		mModelViewMatrix = new double[16];
 	}
 	
