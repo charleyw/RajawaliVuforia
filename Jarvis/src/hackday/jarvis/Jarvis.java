@@ -2,17 +2,12 @@ package hackday.jarvis;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.Button;
 
 import rajawali.util.RajLog;
 import rajawali.vuforia.RajawaliVuforiaActivity;
 
 public class Jarvis extends RajawaliVuforiaActivity {
 	private JarvisRenderer mRenderer;
-	private RajawaliVuforiaActivity mUILayout;
-    private Button mStartScanButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,11 +36,16 @@ public class Jarvis extends RajawaliVuforiaActivity {
 	{
 		super.initApplicationAR();
 		
-		createFrameMarker(0, "Marker1", 50, 50);
-		createFrameMarker(1, "Marker2", 50, 50);
-		
-		createImageMarker("firsttest.xml");
-		createImageMarker("StonesAndChips.xml");
+		createFrameMarker(0, "Marker1", 200, 200);
+		createFrameMarker(1, "Marker2", 200, 200);
+		createFrameMarker(2, "Marker3", 200, 200);
+		createFrameMarker(3, "Marker4", 200, 200);
+		createFrameMarker(4, "Marker5", 200, 200);
+		createFrameMarker(5, "Marker6", 200, 200);
+		createFrameMarker(6, "Marker7", 200, 200);
+		createFrameMarker(7, "Marker8", 200, 200);
+		createFrameMarker(8, "Marker9", 200, 200);
+		createFrameMarker(9, "Marker10", 200, 200);
 
 		// -- this is how you add a cylinder target:
 		//    https://developer.vuforia.com/resources/dev-guide/cylinder-targets
@@ -63,19 +63,5 @@ public class Jarvis extends RajawaliVuforiaActivity {
 		mRenderer.setSurfaceView(mSurfaceView);
 		super.setRenderer(mRenderer);
 		
-	    //Add button for Cloud Reco:
-        mStartScanButton = new Button(this);
-        mStartScanButton.setText("Start Scanning CloudReco");
-         
-        mStartScanButton.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    enterScanningModeNative();
-                     mStartScanButton.setVisibility(View.GONE);
-                 }
-        });
-
-        mUILayout = this;
-        mUILayout.addContentView(mStartScanButton,
-            new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-	}    
+	}
 }
